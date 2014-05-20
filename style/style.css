@@ -1,0 +1,11 @@
+body, html {
+	height: 100%;
+	width: 100%;
+	font: 14px Rockwell, sans-serif;
+}
+
+#footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+}
