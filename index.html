@@ -4,17 +4,55 @@
 		<title>Maze</title>
 		<meta charset="utf-8" />
 		<link rel="stylesheet" type="text/css" href="style/style.css" />
-		<script src="maze.js"></script>
+		<script src="js/maze.js"></script>
 	</head>
 
 	<body>
 		<div id="header">
+			<div id="container">
+				<div id="logo">
+					<h1>Maze</h1>
+				</div>
+
+				<div id="nav">
+					<ul class="nav-list">
+						<li><img src="assets/Notepad32.png" /><a href="/">Home</a></li>
+						<li><img src="assets/Tool32.png" /><a href="#features">Features</a></li>
+						<li><img src="assets/Bookmark32.png" /><a href="#footer">Info</a></li>					
+					</ul>
+				</div>
+			</div>
 		</div>
 
 		<div id="main">
+			<div id="maze-header">
+				<h1>Maze Generator</h1>
+			</div>
+			<div id="maze">
+				<canvas id="maze-container" src="" alt="" height="500" width="500">
+				</canvas>
+			</div>
+			
+			<div id="features-header">
+				<h1>Features</h1>
+			</div>
+
+			<div id="features">
+				<ul class="list">
+					<li><img src="assets/Star100.png" alt="bullet"><h3>Uses HTML5, CSS3 and JavaScript for improved compatibility and performance</h3></li>
+					<li><img src="assets/Star100.png" alt="bullet"><h3>Exportable into a number of languages</h3></li>
+					<li><img src="assets/Star100.png" alt="bullet"><h3>Highly customizable</h3></li>
+					<li><img src="assets/Star100.png" alt="bullet"><h3>Royalty-free</h3></li>
+				</ul>
+			</div>
 		</div>
 
 		<div id="footer">
+			<ul class="footer-list">
+				<li><img src="assets/Chat.png" alt="bullet"><h4><a href="#">Contact me</a></h4></li>
+				<li><img src="assets/Info.png" alt="bullet"><h4><a href="#">About Maze</a></h4></li>
+				<li><img src="assets/Statistics.png" alt="bullet"><h4><a href="#">Donate</a></h4></li>	
+			</ul>
 		</div>
 	</body>
 </html>
