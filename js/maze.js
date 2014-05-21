@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function Init() {
     var c = document.getElementById("maze-container");
     maze_data = CreateArray(c.width, c.height, tilesize);
-    Render(can);
+    Render(c);
 }
 
 function AddHandlers() {
@@ -113,13 +113,16 @@ function Render(canvas) {
         if (tile.type === undefined) {
             var img = new Image();
             img.src = TileTypeSprite.Floor;
-
-            c.drawImage(img, tile.x, tile.y);
+            img.onload = function() {
+                c.drawImage(img, (tile.x * tilesize), (tile.y * tilesize));
+            }
         } else {
             var img = new Image();
             tile.type === 'Wall' ? img.src = TileTypeSprite.Wall : img.src = TileTypeSprite.Floor;
 
-            c.drawImage(img, (tile.x * tilesize), (tile.y * tilesize));
+            img.onload = function() {
+                c.drawImage(img, (tile.x * tilesize), (tile.y * tilesize));
+            }
         }
     }
 }
