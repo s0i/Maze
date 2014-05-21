@@ -5,7 +5,8 @@ var TileTypeSprite = {
 
 var TileType = {
     Floor: 'Floor',
-    Wall: 'Wall'
+    Wall: 'Wall',
+    Empty: 'Empty'
 }
 
 var maze_data;
@@ -87,7 +88,7 @@ function CreateArray(width, height, tilesize) {
     for (var x = 0; x < (width / tilesize); x++) {
         array[x] = [];
         for (var y = 0; y < (height / tilesize); y++) {
-            array[x][y] = new Tile(x, y, 0, TileType.Floor);
+            array[x][y] = new Tile(x, y, 0, TileType.Empty);
         }
     }
     return array;
@@ -110,15 +111,17 @@ function Render(canvas) {
     var c = canvas.getContext('2d');
 
     for (var tile in maze_data) {
-        if (tile.type === undefined) {
+        if (tile.type === TileType.Blank) {} else {
             var img = new Image();
-            img.src = TileTypeSprite.Floor;
-            img.onload = function() {
-                c.drawImage(img, (tile.x * tilesize), (tile.y * tilesize));
+
+            switch (tile.type) {
+                case TileType.Floor:
+                    img.src = TileTypeSprite.Floor;
+                    break;
+                case TileType.Wall:
+                    img.src = TileTypeSprite.Wall;
+                    break;
             }
-        } else {
-            var img = new Image();
-            tile.type === 'Wall' ? img.src = TileTypeSprite.Wall : img.src = TileTypeSprite.Floor;
 
             img.onload = function() {
                 c.drawImage(img, (tile.x * tilesize), (tile.y * tilesize));
