@@ -156,12 +156,12 @@ body, html {
 
 #about-maze {
 	display: none;
-	background-color: #FFFFFF;
+	background-color: #bdc3c7;
 	border-radius: 10px;
 }
 
 .about-list {
-	color: #000000;
+	color: #FFFFFF;
 	list-style-type: none;
 	padding: 5px;
 }
@@ -170,6 +170,7 @@ body, html {
 	display: table;
 	text-align: center;
 	margin: 0 auto;
+	padding-bottom: 20px;
 }
 
 .about-list li h4 {
@@ -184,7 +185,7 @@ body, html {
 }
 
 .ui-dialog-titlebar, .ui-dialog, .ui-widget {
-	background-color: #FFFFFF;
+	background-color: #bdc3c7;
 	border-radius: 10px;
 }
 
