@@ -47,7 +47,7 @@ function AddHandlers() {
         e.preventDefault();
 
         var tile = GetTileInfo(can, e);
-        RemoveTile(tile.x, tile.y, maze_data, e);
+        RemoveTile(tile.x, tile.y, maze_data, can);
         Render(can);
     }, false);
 
@@ -56,8 +56,13 @@ function AddHandlers() {
     }, false);
 }
 
-function RemoveTile(x, y, array) {
-    typeof array[x][y] !== undefined || null ? array[x][y] = new Tile() : array[x][y] = new Tile();
+function RemoveTile(x, y, array, canvas) {
+    var c = canvas.getContext('2d');
+
+    maze_data[x][y] = new Tile(x, y, 0, TileType.Blank);
+    c.rect((x * tilesize), (y * tilesize), tilesize, tilesize);
+    c.fillStyle = "#FFFFFF";
+    c.fill();
 }
 
 function GetTileInfo(canvas, e) {
