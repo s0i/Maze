@@ -16,6 +16,7 @@ body, html {
 	padding: 15px;
 	background-color: #3498db;
 	padding-bottom: 40px;
+	height: 700px;
 }
 
 #maze-header h1 {
@@ -31,6 +32,11 @@ body, html {
 	display: block;
 	margin: 0 auto;
 	background-color: #FFFFFF;
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #container {
@@ -52,6 +58,7 @@ body, html {
 
 #nav .nav-list {
 	margin: 0;
+	color: #FFFFFF;
 }
 
 #nav .nav-list img {
@@ -68,7 +75,7 @@ body, html {
 	font-weight: bold;
 }
 
-#nav li a:link, a:visited, a:active {
+#nav li a:link, a:visited {
 	color: #3498db;
 	text-decoration: none;
 	margin-right: 20px;
@@ -118,7 +125,7 @@ body, html {
 }
 
 #footer {
-	padding: 50px 30px 80px 30px;
+	padding: 40px 30px 80px 30px;
 	background-color: #16a085;
 }
 
@@ -131,7 +138,7 @@ body, html {
 
 .footer-list li {
 	display: table;
-	margin-right: 30px;
+	margin-right: 35px;
 }	
 
 .footer-list li h4 {
@@ -141,7 +148,54 @@ body, html {
 	padding-left: 20px;
 }
 
-.footer-list li a:link, a:visited, a:active {
+.footer-list li a:link, a:visited {
 	color: #ecf0f1;
 	text-decoration: none;
+	padding: 0;
+}
+
+#about-maze {
+	display: none;
+	background-color: #FFFFFF;
+	border-radius: 10px;
+}
+
+.about-list {
+	color: #000000;
+	list-style-type: none;
+	padding: 5px;
+}
+
+.about-list li {
+	display: table;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.about-list li h4 {
+	margin: 0;
+	display: table-cell;
+	vertical-align: middle;
+	padding-left: 20px;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+.ui-dialog-titlebar, .ui-dialog, .ui-widget {
+	background-color: #FFFFFF;
+	border-radius: 10px;
+}
+
+.ui-dialog-titlebar {
+	display: none;
+}
+
+.ui-dialog {
+	padding: 15px;
+}
+
+.ui-dialog:focus {
+  outline: none;
 }

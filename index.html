@@ -4,8 +4,10 @@
 		<title>Maze</title>
 		<meta charset="utf-8" />
 		<link rel="stylesheet" type="text/css" href="style/style.css" />
+		<script src="js/jquery-2.1.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 		<script src="js/maze.js"></script>
-	</head>
+			</head>
 
 	<body>
 		<div id="header">
@@ -33,12 +35,22 @@
 					Your browser does not support HTML5 Canvas.
 				</canvas>
 			</div>
+
+			<div id="console">
+			</div>
 			
 			<div id="features-header">
 				<h1>Features</h1>
 			</div>
 
 			<div id="features">
+				<div id="about-maze">
+					<ul class="about-list">
+						<li><img src="assets/Folder.png" alt="folder"><h4>Credits to 	MediaLoot for the Flat Vector Icons used<h4></li>
+						<li>Copyright &copy; Harley Benoit 2014</li>
+					</ul>
+				</div>
+
 				<ul class="list">
 					<li><img src="assets/Star100.png" alt="bullet"><h3>Uses HTML5, CSS3 and JavaScript for improved compatibility and performance</h3></li>
 					<li><img src="assets/Star100.png" alt="bullet"><h3>Exportable into a number of languages</h3></li>
@@ -49,10 +61,11 @@
 		</div>
 
 		<div id="footer">
+
 			<ul class="footer-list">
-				<li><img src="assets/Chat.png" alt="bullet"><h4><a href="#">Contact me</a></h4></li>
-				<li><img src="assets/Info.png" alt="bullet"><h4><a href="#">About Maze</a></h4></li>
-				<li><img src="assets/Statistics.png" alt="bullet"><h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPR4YYQDEDGAL" target="_blank">Donate</a></h4></li>	
+				<li><img src="assets/Chat.png" alt="bullet"/><h4><a href="#">Contact me</a></h4></li>
+				<li id="about"><img src="assets/Info.png" alt="bullet"/><h4><a href="javascript:void(0)">About Maze</a></h4></li>
+				<li><img src="assets/Statistics.png" alt="bullet"/><h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPR4YYQDEDGAL" target="_blank">Donate</a></h4></li>	
 			</ul>
 		</div>
 	</body>

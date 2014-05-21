@@ -2,6 +2,9 @@ var maze_data;
 var tilesize = 32;
 
 document.addEventListener("DOMContentLoaded", function() {
+    $('#about-maze').dialog({
+        autoOpen: false
+    });
     Init();
     AddHandlers();
 }, false);
@@ -13,6 +16,8 @@ function Init() {
 
 function AddHandlers() {
     var can = document.getElementById("maze-container");
+    var about = document.getElementById("about");
+    var aboutMaze = document.getElementById('about-maze');
 
     can.addEventListener("click", function(e) {
         switch (e.keyCode) {
@@ -23,12 +28,27 @@ function AddHandlers() {
                 break;
         }
     }, false);
+
+    can.addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+
+        var tile = GetTileInfo(can);
+        RemoveTile(tile.x, tile.y, maze_data);
+    }, false);
+
+    about.addEventListener("click", function() {
+        $('#about-maze').dialog('isOpen') ? $('#about-maze').dialog('close') : $('#about-maze').dialog('open');
+    }, false);
+
+    $("#about-maze").bind("clickoutside", function(event) {
+        $(this).hide();
+    });
 }
 
 function RemoveTile(x, y, array) {
     if (typeof array[x][y] === undefined) return false;
     else {
-        array[x][y] = {};
+        array[x][y] = null;
         return true;
     }
 }
@@ -38,12 +58,24 @@ function GetTileInfo(canvas) {
 		- Height
 		- Type
 	*/
-    var rect = canvas.getBoundingClientRect();
+    var coords = GetMousePosition(canvas);
     return {
-        x: Math.floor((event.clientX - rect.left) / tilesize),
-        y: Math.floor((event.clientY - rect.top) / tilesize),
+        x: coords.x,
+        y: coords.y,
         height: 20,
         type: 'Wall'
+    }
+}
+
+function GetMousePosition(canvas) {
+    var rect = canvas.getBoundingClientRect();
+
+    var x = Math.floor((event.clientX - rect.left) / tilesize);
+    var y = Math.floor((event.clientY - rect.top) / tilesize);
+
+    return {
+        x: x,
+        y: y
     }
 }
 
