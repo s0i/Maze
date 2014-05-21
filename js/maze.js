@@ -48,6 +48,7 @@ function AddHandlers() {
 
         var tile = GetTileInfo(can, e);
         RemoveTile(tile.x, tile.y, maze_data, e);
+        Render(can);
     }, false);
 
     about.addEventListener("click", function() {
@@ -56,7 +57,7 @@ function AddHandlers() {
 }
 
 function RemoveTile(x, y, array) {
-    typeof array[x][y] === undefined || null ? array[x][y] = new Tile() : array[x][y] = new Tile();
+    typeof array[x][y] !== undefined || null ? array[x][y] = new Tile() : array[x][y] = new Tile();
 }
 
 function GetTileInfo(canvas, e) {
@@ -110,21 +111,23 @@ function PopulateTile(x, y, height, type) {
 function Render(canvas) {
     var c = canvas.getContext('2d');
 
-    for (var tile in maze_data) {
-        if (tile.type === TileType.Blank) {} else {
-            var img = new Image();
-
-            switch (tile.type) {
-                case TileType.Floor:
+    for (var x = 0; x < maze_data.length; x++) {
+        for (var i = 0; i < maze_data[x].length; i++) {
+            if (maze_data[x][i].type === TileType.Blank) {} else {
+                if (maze_data[x][i].type === TileType.Floor) {
+                    var img = new Image();
                     img.src = TileTypeSprite.Floor;
-                    break;
-                case TileType.Wall:
-                    img.src = TileTypeSprite.Wall;
-                    break;
-            }
+                    img.onload = function() {
+                        c.drawImage(img, (maze_data[x][i].x * tilesize), (maze_data[x][i].y * tilesize));
+                    }
+                }
 
-            img.onload = function() {
-                c.drawImage(img, (tile.x * tilesize), (tile.y * tilesize));
+                if (maze_data[x][i].type === TileType.Wall) {
+                    var img = new Image();
+                    img.src = TileTypeSprite.Wall;
+
+                    c.drawImage(img, (maze_data[x][i].x * tilesize), (maze_data[x][i].y * tilesize));
+                }
             }
         }
     }
