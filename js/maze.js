@@ -1,6 +1,6 @@
 var TileTypeSprite = {
-    Floor: '../assets/Star100.png' /* Floor sprite path */ ,
-    Wall: '' /* Wall sprite path */
+    Floor: '../assets/Star32.png' /* Floor sprite path */ ,
+    Wall: '../assets/Star32.png' /* Wall sprite path */
 }
 
 var TileType = {
@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function Init() {
     var c = document.getElementById("maze-container");
     maze_data = CreateArray(c.width, c.height, tilesize);
+    Render(can);
 }
 
 function AddHandlers() {
@@ -109,15 +110,16 @@ function Render(canvas) {
     var c = canvas.getContext('2d');
 
     for (var tile in maze_data) {
-        if (tile === undefined || null) {
-            tile.type = TileType.Floor;
-            var img = TileTypeSprite.Floor;
-            c.drawImage(img, tile.x, tile.y)
+        if (tile.type === undefined) {
+            var img = new Image();
+            img.src = TileTypeSprite.Floor;
+
+            c.drawImage(img, tile.x, tile.y);
         } else {
             var img = new Image();
-            tile.type = TileType.Wall ? img.src = TileTypeSprite.Wall : img.src = TileTypeSprite.Floor;
-            c.drawImage(img, tile.x, tile.y);
+            tile.type === 'Wall' ? img.src = TileTypeSprite.Wall : img.src = TileTypeSprite.Floor;
+
+            c.drawImage(img, (tile.x * tilesize), (tile.y * tilesize));
         }
     }
-    return true;
 }
