@@ -1,6 +1,14 @@
+document.addEventListener("DOMContentLoaded", function() {
+    AddHandlers();
+    $('#about-maze').dialog({
+        autoOpen: false
+    });
+    Init();
+}, false);
+
 var TileTypeSprite = {
-    Floor: '../assets/Star32.png' /* Floor sprite path */ ,
-    Wall: '../assets/Star32.png' /* Wall sprite path */
+    Floor: '../assets/floor.png' /* Floor sprite path */ ,
+    Wall: '../assets/wall.png' /* Wall sprite path */
 }
 
 var TileType = {
@@ -11,15 +19,7 @@ var TileType = {
 
 var maze_data;
 var tilesize = 32;
-var currentTileType = TileType.Wall;
-
-document.addEventListener("DOMContentLoaded", function() {
-    $('#about-maze').dialog({
-        autoOpen: false
-    });
-    Init();
-    AddHandlers();
-}, false);
+var currentTileType = TileType.Floor;
 
 function Init() {
     var c = document.getElementById("maze-container");
@@ -118,13 +118,12 @@ function Render(canvas) {
 
     for (var x = 0; x < maze_data.length; x++) {
         for (var i = 0; i < maze_data[x].length; i++) {
-            if (maze_data[x][i].type === TileType.Blank) {} else {
+            if (maze_data[x][i].type === TileType.Empty) {} else {
                 if (maze_data[x][i].type === TileType.Floor) {
                     var img = new Image();
                     img.src = TileTypeSprite.Floor;
-                    img.onload = function() {
-                        c.drawImage(img, (maze_data[x][i].x * tilesize), (maze_data[x][i].y * tilesize));
-                    }
+
+                    c.drawImage(img, (maze_data[x][i].x * tilesize), (maze_data[x][i].y * tilesize));
                 }
 
                 if (maze_data[x][i].type === TileType.Wall) {
@@ -136,4 +135,13 @@ function Render(canvas) {
             }
         }
     }
+}
+
+function GetMazeData() {
+    var array = [];
+
+    for (var x = 0; x < maze_data.length; x++) {
+        for (var y = 0; y < maze_data[x].length; y++) {}
+    }
+    return array;
 }
