@@ -12,11 +12,6 @@ var Maze = {
             THIRTY_SIX: 36
         },
 
-        Current: {
-            Type: 'Empty',
-            Size: 36
-        },
-
         Data: null,
 
         Sprite: {
