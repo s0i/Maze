@@ -21,43 +21,50 @@ var Maze = {
         }
     },
 
+    CreateArray: function(width, height) {
+        var array = [];
+
+        for (var x = 0; x < (width / 32); x++) {
+            array[x] = [];
+            for (var y = 0; y < (height / 32); y++) {
+                array[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Empty);
+            }
+        }
+
+        return array;
+    },
+
     Init: function() {
+        Maze.Tile.Data = Maze.CreateArray($('#maze-container').width(), $('#maze-container').height());
+
         $('#maze-container').click(function(event) {
             event.preventDefault();
-            var coords = GetMousePosition($(this));
-            var tile = GetTileInfo($(this), coords);
-            PopulateTile(tile.x, tile.y, tile.height, CurrentTileType);
-            Render($(this));
+
+            var coords = Maze.GetMousePosition($('#maze-container').get(0), {
+                x: event.clientX,
+                y: event.clientY
+            });
+            var tile = Maze.GetTileInfo($('#maze-container').get(0), coords);
+            Maze.PopulateTile(tile.coords.x, tile.coords.y, 10, 'Empty');
+            Maze.Render($('#maze-container').get(0));
         });
 
         $('#maze-container').bind("contextmenu", function(event) {
             event.preventDefault();
 
-            var coords = GetMousePosition($(this));
-            var tile = GetTileInfo($(this), coords);
-            RemoveTile(tile.x, tile.y, maze_data, $(this));
-            Render($(this));
+            var coords = Maze.GetMousePosition($('#maze-container').get(0), {
+                x: event.clientX,
+                y: event.clientY
+            });
+            var tile = Maze.GetTileInfo($('#maze-container').get(0), coords);
+            Maze.RemoveTile(tile.coords.x, tile.coords.y, Maze.Tile.Data, $('#maze-container').get(0));
+            Maze.Render($('#maze-container').get(0));
         });
-
-        CreateArray();
-        Render($('#maze-container'));
+        this.Render($('#maze-container').get(0));
     },
 
     RemoveTile: function(x, y, array, canvas) {
-        maze_data[x][y] = new Tile(x, y, 0, Tile.Type.Empty);
-    },
-
-    CreateArray: function(width, height, tilesize) {
-        var array = [];
-
-        for (var x = 0; x < (width / tilesize); x++) {
-            array[x] = [];
-            for (var y = 0; y(height / tilesize); y++) {
-                array[x][y] = new Tile(x, y, 0, TileType.Empty);
-            }
-        }
-
-        return array;
+        this.Tile.Data[x][y] = new this.Tile(x, y, 0, Tile.Type.Empty);
     },
 
     Add: {
@@ -82,16 +89,16 @@ var Maze = {
     },
 
     PopulateTile: function(x, y, height, type) {
-        var tile = new Add.Tile(x, y, height, type);
+        var tile = new this.Add.Tile(x, y, height, type);
 
-        maze_data[x][y] = tile;
+        Maze.Tile.Data[x][y] = tile;
     },
 
     GetMousePosition: function(canvas, coords) {
         var rect = canvas.getBoundingClientRect();
 
-        var x = Math.floor((coords.x - rect.left) / tilesize);
-        var y = Math.floor((coords.y - rect.top) / tilesize);
+        var x = Math.floor((coords.x - rect.left) / 32);
+        var y = Math.floor((coords.y - rect.top) / 32);
 
         return {
             x: x,
@@ -102,23 +109,23 @@ var Maze = {
     Render: function(canvas) {
         var c = canvas.getContext('2d');
 
-        for (var x = 0; x < maze_data.length; x++) {
-            for (var y = 0; y < maze_data[x].length; y++) {
-                if (maze_data[x][y].type === TileType.Empty) {
+        for (var x = 0; x < Maze.Tile.Data.length; x++) {
+            for (var y = 0; y < Maze.Tile.Data[x].length; y++) {
+                if (Maze.Tile.Data[x][y].type === Maze.Tile.Type.Empty) {
                     // Diddly squat
                 } else {
-                    if (maze_data[x][y].type === TileType.Floor) {
+                    if (this.Tile.Data[x][y].type === Maze.Tile.Type.Floor) {
                         var img = new Image();
-                        img.src = Tile.Sprite.Floor;
+                        img.src = Maze.Tile.Sprite.Floor;
 
-                        c.drawImage(img, (maze_data[x][y].x * tiles))
+                        c.drawImage(img, (Maze.Tile.Data[x][y].x * tiles))
                     }
 
-                    if (maze_data[x][i].type === TileType.Wall) {
+                    if (this.Tile.Data[x][i].type === TileType.Wall) {
                         var img = new Image();
-                        img.src = Tile.Sprite.Wall;
+                        img.src = Maze.Tile.Sprite.Wall;
 
-                        c.drawImage(img, (maze_data[x][i].x * tilesize), (maze_data[x][i].y * tilesize));
+                        c.drawImage(img, (this.Tile.Data[x][i].x * 32), (Maze.Tile.Data[x][i].y * 32));
                     }
                 }
             }
@@ -128,11 +135,11 @@ var Maze = {
     GetTileInfo: function(canvas, coords) {
         var tile = {
             coords: {
-                x: maze_data[coords.x][coords.y].x,
-                y: maze_data[coords.x][coords.y].y
+                x: Maze.Tile.Data[coords.x][coords.y].x,
+                y: Maze.Tile.Data[coords.x][coords.y].y
             },
-            height: maze_data[coords.x][coords.y].height,
-            type: maze_data[coords.x][coords.y].type
+            height: Maze.Tile.Data[coords.x][coords.y].height,
+            type: Maze.Tile.Data[coords.x][coords.y].type
         };
 
         return tile;
