@@ -1,0 +1,49 @@
+input[type="radio"] {
+    display:none;
+}
+
+input[type="radio"] + label {
+	background-color: #3498db;
+	border-radius: 10px;
+	padding: 10px;
+	color: #FFFFFF;
+}
+
+input[type="radio"]:checked + label {
+    background-color: #42ADF5;
+}
+
+input[type="number"] {
+	border-radius: 10px;
+	border: none;
+	padding: 5px;
+}
+
+input[type="number"]:focus {
+	outline: none;
+}
+
+button {
+	border-radius: 10px;
+	border: none;
+	padding: 10px;	
+	color: #FFFFFF;
+	background-color: #3498db;
+	font-family: Montserrat, sans-serif;
+	margin: 0;
+}
+
+button:focus {
+	outline: none;
+}
+
+select {
+	border-radius: 10px;
+	border: none;
+	padding: 10px;
+	overflow: hidden;
+}
+
+select:focus {
+	outline: 0;
+}

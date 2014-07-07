@@ -60,11 +60,24 @@ var Maze = {
             Maze.RemoveTile(tile.coords.x, tile.coords.y, Maze.Tile.Data, $('#maze-container').get(0));
             Maze.Render($('#maze-container').get(0));
         });
+
+        $('#console').click(function(event) {
+            if (event.target === this) {
+                $(this).animate({
+                    right: ($(this).css('right') === "250px") ? 115 : 250
+                }, 500);
+
+                $('#maze-container').animate({
+                    right: ($('#maze-container').css('right') === '0px') ? 280 : 0
+                }, 500);
+            }
+        });
+
         this.Render($('#maze-container').get(0));
     },
 
     RemoveTile: function(x, y, array, canvas) {
-        this.Tile.Data[x][y] = new this.Tile(x, y, 0, Tile.Type.Empty);
+        this.Tile.Data[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Empty);
     },
 
     Add: {

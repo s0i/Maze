@@ -4,7 +4,7 @@
 		<title>Maze</title>
 		<meta charset="utf-8" />
 		<link rel="stylesheet" type="text/css" href="style/style.css" />
-		<link rel="stylesheet" type="text/css" href="style/dialog.css" />
+		<link rel="stylesheet" type="text/css" href="style/ui.css" />
 	</head>
 
 	<body>
@@ -16,7 +16,7 @@
 
 				<div id="nav">
 					<ul class="nav-list">
-						<li><img src="assets/Notepad32.png" /><a href="/">Home</a></li>
+						<li><img src="assets/Notepad32.png" /><a href="#maze">Home</a></li>
 						<li><img src="assets/Tool32.png" /><a href="#features">Features</a></li>
 						<li><img src="assets/Bookmark32.png" /><a href="#footer">Info</a></li>					
 					</ul>
@@ -29,13 +29,27 @@
 				<h1>Maze Generator</h1>
 			</div>
 			<div id="maze">
+			<div id="console">
+					<form id="palette">
+						<input type="radio" name="tilesize" id="eight" value="8" checked="checked" required="required">
+						<label for="eight">8 x 8</label>
+						<input type="radio" name="tilesize" id="sixteen" value="16" required="required">
+						<label for="sixteen">16 x 16</label>
+						<input type="radio" name="tilesize" id="thirtytwo" value="32" required="required">
+						<label for="thirtytwo"> 32 x 32</label>
+						<br><br>
+						<label for="height">Height</label><input type="number" min="0" max="10" required="required">
+						<br><br>
+						<input type="radio" name="type" id="floor" value="floor" checked="checked" required="required">
+						<label for="floor">Floor</label>
+						<input type="radio" name="type"  id="wall" value="wall" required="required">
+						<label for="wall">Wall</label>
+					</form>
+				</div>
+
 				<canvas id="maze-container" height="704" width="704">
 					Your browser does not support HTML5 Canvas.
 				</canvas>
-				
-				<div id="console">
-					Boo
-				</div>
 			</div>
 			
 			<div id="features-header">
@@ -43,13 +57,6 @@
 			</div>
 
 			<div id="features">
-				<div id="about-maze">
-					<ul class="about-list">
-						<li><h4>Credits to MediaLoot for the Flat Vector Icons used<h4></li>
-						<li>Copyright &copy; Harley Benoit 2014</li>
-					</ul>
-				</div>
-
 				<ul class="list">
 					<li><img src="assets/Star100.png" alt="bullet"><h3>Uses HTML5, CSS3 and JavaScript for improved compatibility and performance</h3></li>
 					<li><img src="assets/Star100.png" alt="bullet"><h3>Exportable into a number of languages</h3></li>
@@ -63,7 +70,6 @@
 
 			<ul class="footer-list">
 				<li><img src="assets/Chat.png" alt="bullet"/><h4><a href="#">Contact me</a></h4></li>
-				<li id="about"><img src="assets/Info.png" alt="bullet"/><h4><a href="javascript:void(0)">About Maze</a></h4></li>
 				<li><img src="assets/Statistics.png" alt="bullet"/><h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPR4YYQDEDGAL" target="_blank">Donate</a></h4></li>	
 			</ul>
 		</div>
