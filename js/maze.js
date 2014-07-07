@@ -1,147 +1,162 @@
-document.addEventListener("DOMContentLoaded", function() {
-    AddHandlers();
-    $('#about-maze').dialog({
-        autoOpen: false
-    });
-    Init();
-}, false);
+var Maze = {
+    Tile: {
+        Type: {
+            Floor: 'Floor',
+            Wall: 'Wall',
+            Empty: 'Empty'
+        },
 
-var TileTypeSprite = {
-    Floor: '../assets/floor.png' /* Floor sprite path */ ,
-    Wall: '../assets/wall.png' /* Wall sprite path */
-}
+        Tilesize: {
+            NINE: 9,
+            EIGHTEEN: 18,
+            THIRTY_SIX: 36
+        },
 
-var TileType = {
-    Floor: 'Floor',
-    Wall: 'Wall',
-    Empty: 'Empty'
-}
+        Current: {
+            Type: 'Empty',
+            Size: 36
+        },
 
-var maze_data;
-var tilesize = 32;
-var currentTileType = TileType.Floor;
+        Data: null,
 
-function Init() {
-    var c = document.getElementById("maze-container");
-    maze_data = CreateArray(c.width, c.height, tilesize);
-    Render(c);
-}
-
-function AddHandlers() {
-    var can = document.getElementById("maze-container");
-    var about = document.getElementById("about");
-    var aboutMaze = document.getElementById('about-maze');
-
-    can.addEventListener("click", function(e) {
-        e.preventDefault();
-        switch (e.keyCode) {
-            case 0:
-                var tile = GetTileInfo(can, e);
-                PopulateTile(tile.x, tile.y, tile.height, currentTileType);
-                Render(can);
-                break;
+        Sprite: {
+            Floor: '',
+            Wall: '',
+            Empty: ''
         }
-    }, false);
+    },
 
-    can.addEventListener("contextmenu", function(e) {
-        e.preventDefault();
+    Init: function() {
+        $('#maze-container').click(function(event) {
+            event.preventDefault();
+            var coords = GetMousePosition($(this));
+            var tile = GetTileInfo($(this), coords);
+            PopulateTile(tile.x, tile.y, tile.height, CurrentTileType);
+            Render($(this));
+        });
 
-        var tile = GetTileInfo(can, e);
-        RemoveTile(tile.x, tile.y, maze_data, can);
-        Render(can);
-    }, false);
+        $('#maze-container').bind("contextmenu", function(event) {
+            event.preventDefault();
 
-    about.addEventListener("click", function() {
-        $('#about-maze').dialog('isOpen') ? $('#about-maze').dialog('close') : $('#about-maze').dialog('open');
-    }, false);
-}
+            var coords = GetMousePosition($(this));
+            var tile = GetTileInfo($(this), coords);
+            RemoveTile(tile.x, tile.y, maze_data, $(this));
+            Render($(this));
+        });
 
-function RemoveTile(x, y, array, canvas) {
-    var c = canvas.getContext('2d');
+        CreateArray();
+        Render($('#maze-container'));
+    },
 
-    maze_data[x][y] = new Tile(x, y, 0, TileType.Blank);
-    c.rect((x * tilesize), (y * tilesize), tilesize, tilesize);
-    c.fillStyle = "#FFFFFF";
-    c.fill();
-}
+    RemoveTile: function(x, y, array, canvas) {
+        maze_data[x][y] = new Tile(x, y, 0, Tile.Type.Empty);
+    },
 
-function GetTileInfo(canvas, e) {
-    var coords = GetMousePosition(canvas, e);
-    var tile = [maze_data[coords.x][coords.y].type, maze_data[coords.x][coords.y].height];
-    return {
-        x: coords.x,
-        y: coords.y,
-        height: tile[1],
-        type: tile[0]
-    }
-}
+    CreateArray: function(width, height, tilesize) {
+        var array = [];
 
-function GetMousePosition(canvas, event) {
-    var rect = canvas.getBoundingClientRect();
-
-    var x = Math.floor((event.clientX - rect.left) / tilesize);
-    var y = Math.floor((event.clientY - rect.top) / tilesize);
-
-    return {
-        x: x,
-        y: y
-    }
-}
-
-function CreateArray(width, height, tilesize) {
-    var array = [];
-
-    for (var x = 0; x < (width / tilesize); x++) {
-        array[x] = [];
-        for (var y = 0; y < (height / tilesize); y++) {
-            array[x][y] = new Tile(x, y, 0, TileType.Empty);
+        for (var x = 0; x < (width / tilesize); x++) {
+            array[x] = [];
+            for (var y = 0; y(height / tilesize); y++) {
+                array[x][y] = new Tile(x, y, 0, TileType.Empty);
+            }
         }
-    }
-    return array;
-}
 
-function Tile(x, y, height, type) {
-    this.x = x;
-    this.y = y;
-    this.height = height;
-    this.type = type;
-}
+        return array;
+    },
 
-function PopulateTile(x, y, height, type) {
-    var tile = new Tile(x, y, height, type);
+    Add: {
+        Tile: function(x, y, height, type) {
+            this.x = x;
+            this.y = y;
+            this.height = height;
+            this.type = type;
+        },
 
-    maze_data[x][y] = tile;
-}
+        NPC: function(x, y, type) {
+            this.x = x;
+            this.y = y;
+            this.type = type;
+        },
 
-function Render(canvas) {
-    var c = canvas.getContext('2d');
+        Item: function(x, y, type) {
+            this.x = x;
+            this.y = y;
+            this.type = type;
+        }
+    },
 
-    for (var x = 0; x < maze_data.length; x++) {
-        for (var i = 0; i < maze_data[x].length; i++) {
-            if (maze_data[x][i].type === TileType.Empty) {} else {
-                if (maze_data[x][i].type === TileType.Floor) {
-                    var img = new Image();
-                    img.src = TileTypeSprite.Floor;
+    PopulateTile: function(x, y, height, type) {
+        var tile = new Add.Tile(x, y, height, type);
 
-                    c.drawImage(img, (maze_data[x][i].x * tilesize), (maze_data[x][i].y * tilesize));
-                }
+        maze_data[x][y] = tile;
+    },
 
-                if (maze_data[x][i].type === TileType.Wall) {
-                    var img = new Image();
-                    img.src = TileTypeSprite.Wall;
+    GetMousePosition: function(canvas, coords) {
+        var rect = canvas.getBoundingClientRect();
 
-                    c.drawImage(img, (maze_data[x][i].x * tilesize), (maze_data[x][i].y * tilesize));
+        var x = Math.floor((coords.x - rect.left) / tilesize);
+        var y = Math.floor((coords.y - rect.top) / tilesize);
+
+        return {
+            x: x,
+            y: y
+        }
+    },
+
+    Render: function(canvas) {
+        var c = canvas.getContext('2d');
+
+        for (var x = 0; x < maze_data.length; x++) {
+            for (var y = 0; y < maze_data[x].length; y++) {
+                if (maze_data[x][y].type === TileType.Empty) {
+                    // Diddly squat
+                } else {
+                    if (maze_data[x][y].type === TileType.Floor) {
+                        var img = new Image();
+                        img.src = Tile.Sprite.Floor;
+
+                        c.drawImage(img, (maze_data[x][y].x * tiles))
+                    }
+
+                    if (maze_data[x][i].type === TileType.Wall) {
+                        var img = new Image();
+                        img.src = Tile.Sprite.Wall;
+
+                        c.drawImage(img, (maze_data[x][i].x * tilesize), (maze_data[x][i].y * tilesize));
+                    }
                 }
             }
         }
-    }
-}
+    },
 
-function GetMazeData() {
-    var array = [];
+    GetTileInfo: function(canvas, coords) {
+        var tile = {
+            coords: {
+                x: maze_data[coords.x][coords.y].x,
+                y: maze_data[coords.x][coords.y].y
+            },
+            height: maze_data[coords.x][coords.y].height,
+            type: maze_data[coords.x][coords.y].type
+        };
 
-    for (var x = 0; x < maze_data.length; x++) {
-        for (var y = 0; y < maze_data[x].length; y++) {}
+        return tile;
+    },
+
+    GetMazeData: function(data) {
+        var array = [];
+
+        for (var x = 0; x < data.length; x++) {
+            array[x] = [];
+            for (var y = 0; y < data[x].length; y++) {
+                array[x][y] = {
+                    x: data[x][y].x,
+                    y: data[x][y].y,
+                    height: data[x][y].height,
+                    type: data[x][y].type
+                };
+            }
+        }
+        return array;
     }
-    return array;
-}
+};
