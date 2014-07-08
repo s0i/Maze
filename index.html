@@ -29,23 +29,23 @@
 				<h1>Maze Generator</h1>
 			</div>
 			<div id="maze">
-			<div id="console">
+				<div id="console">
 					<form id="palette">
-						<p>Tile size</p>
-						<input type="radio" name="tilesize" id="eight" value="8" checked="checked" required="required">
+						<p id="tilesize">Tile size</p>
+						<input type="radio" name="tilesize" id="eight" value="8">
 						<label for="eight">8 x 8</label>
-						<input type="radio" name="tilesize" id="sixteen" value="16" required="required">
+						<input type="radio" name="tilesize" id="sixteen" value="16">
 						<label for="sixteen">16 x 16</label>
-						<input type="radio" name="tilesize" id="thirtytwo" value="32" required="required">
+						<input type="radio" name="tilesize" id="thirtytwo" value="32" checked="checked">
 						<label for="thirtytwo"> 32 x 32</label>
 						<br><br>
-						<label for="height">Height</label><input type="number" min="0" max="10" required="required">
+						<label for="height">Height</label><input type="text" id="height">
 						<br><br>
-						<p>Tile type</p>
-						<input type="radio" name="type" id="floor" value="floor" checked="checked" required="required">
+						<p id="tiletype">Tile type</p>
+						<input type="radio" name="type" id="floor" value="Floor" checked="checked">
 						<label for="floor">Floor</label>
-						<input type="radio" name="type"  id="wall" value="wall" required="required">
-						<label for="wall">Wall</label>
+						<input type="radio" name="type"  id="wall" value="Wall">
+						<label for="wall">Wall</label><br>
 					</form>
 				</div>
 
@@ -76,8 +76,8 @@
 			</ul>
 		</div>
 		<script src="js/jquery-2.1.1.js"></script>
-		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 		<script src="js/maze.js"></script>
+		<script src="js/Drawer.js"></script>
 		<script>
 			Maze.Init();
 		</script>

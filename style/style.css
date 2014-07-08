@@ -20,6 +20,14 @@ body, html {
 	cursor: url('../assets/floor.png');
 }
 
+#id {
+	margin-right: 10px;
+}
+
+.form-control {
+	margin-top: 20px;
+}
+
 #maze-header h1 {
 	font-size: 300%;
 	margin: 0;
@@ -84,7 +92,7 @@ body, html {
 }
 
 #nav li a:link, a:visited {
-	color: #3498db;
+	color: #ecf0f1;
 	text-decoration: none;
 	margin-right: 20px;
 }
@@ -191,4 +199,8 @@ label {
 p {
 	margin: 0;
 	margin-bottom: 15px;
+}
+
+#export {
+	margin-bottom: 0;
 }
