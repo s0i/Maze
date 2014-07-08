@@ -6,10 +6,15 @@ var Maze = {
             Empty: 'Empty'
         },
 
-        Tilesize: {
-            NINE: 9,
-            EIGHTEEN: 18,
-            THIRTY_SIX: 36
+        Size: {
+            EIGHT: 8,
+            SIXTEEN: 16,
+            THIRTY_TWO: 32
+        },
+
+        Sprite: {
+            Floor: '../assets/floor.png',
+            Wall: '../assets/wall.png'
         },
 
         Data: null,
@@ -24,9 +29,9 @@ var Maze = {
     CreateArray: function(width, height) {
         var array = [];
 
-        for (var x = 0; x < (width / 32); x++) {
+        for (var x = 0; x < (width / Size); x++) {
             array[x] = [];
-            for (var y = 0; y < (height / 32); y++) {
+            for (var y = 0; y < (height / Size); y++) {
                 array[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Empty);
             }
         }
@@ -36,6 +41,7 @@ var Maze = {
 
     Init: function() {
         Maze.Tile.Data = Maze.CreateArray($('#maze-container').width(), $('#maze-container').height());
+        var clicked = false;
 
         $('#maze-container').click(function(event) {
             event.preventDefault();
@@ -45,12 +51,35 @@ var Maze = {
                 y: event.clientY
             });
             var tile = Maze.GetTileInfo($('#maze-container').get(0), coords);
-            Maze.PopulateTile(tile.coords.x, tile.coords.y, 10, 'Empty');
+            Maze.PopulateTile(tile.coords.x, tile.coords.y, 10, Type);
             Maze.Render($('#maze-container').get(0));
+        });
+
+        $('#maze-container').mousedown(function() {
+            clicked = true;
+        });
+
+        $('#maze-container').mouseup(function() {
+            clicked = false;
+        });
+
+        $('#maze-container').mousemove(function(event) {
+            event.preventDefault();
+            if (clicked === true) {
+                alert('Moving');
+                var coords = Maze.GetMousePosition($('#maze-container').get(0), {
+                    x: event.clientX,
+                    y: event.clientY
+                });
+                var tile = Maze.GetTileInfo($('#maze-container').get(0), coords);
+                Maze.PopulateTile(tile.coords.x, tile.coords.y, 10, Type);
+                Maze.Render($('#maze-container').get(0));
+            }
         });
 
         $('#maze-container').bind("contextmenu", function(event) {
             event.preventDefault();
+            clicked = true;
 
             var coords = Maze.GetMousePosition($('#maze-container').get(0), {
                 x: event.clientX,
@@ -73,11 +102,15 @@ var Maze = {
             }
         });
 
+        $('input[name="tilesize"]').change(function(event) {
+            Size = $(this).attr('value');
+        });
+
         this.Render($('#maze-container').get(0));
     },
 
     RemoveTile: function(x, y, array, canvas) {
-        this.Tile.Data[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Empty);
+        this.Tile.Data[x][y] = new this.Add.Tile(x, y, 0, Type);
     },
 
     Add: {
@@ -110,8 +143,8 @@ var Maze = {
     GetMousePosition: function(canvas, coords) {
         var rect = canvas.getBoundingClientRect();
 
-        var x = Math.floor((coords.x - rect.left) / 32);
-        var y = Math.floor((coords.y - rect.top) / 32);
+        var x = Math.floor((coords.x - rect.left) / Size);
+        var y = Math.floor((coords.y - rect.top) / Size);
 
         return {
             x: x,
@@ -131,14 +164,14 @@ var Maze = {
                         var img = new Image();
                         img.src = Maze.Tile.Sprite.Floor;
 
-                        c.drawImage(img, (Maze.Tile.Data[x][y].x * tiles))
+                        c.drawImage(img, (Maze.Tile.Data[x][y].x * Size), (Maze.Tile.Data[x][y].y * Size))
                     }
 
-                    if (this.Tile.Data[x][i].type === TileType.Wall) {
+                    if (this.Tile.Data[x][y].type === Maze.Tile.Type.Wall) {
                         var img = new Image();
                         img.src = Maze.Tile.Sprite.Wall;
 
-                        c.drawImage(img, (this.Tile.Data[x][i].x * 32), (Maze.Tile.Data[x][i].y * 32));
+                        c.drawImage(img, (this.Tile.Data[x][y].x * Size), (Maze.Tile.Data[x][y].y * Size));
                     }
                 }
             }
@@ -175,3 +208,6 @@ var Maze = {
         return array;
     }
 };
+
+var Type = Maze.Tile.Type.Floor;
+var Size = Maze.Tile.Size.THIRTY_TWO;

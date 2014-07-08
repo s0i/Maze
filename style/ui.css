@@ -10,7 +10,7 @@ input[type="radio"] + label {
 }
 
 input[type="radio"]:checked + label {
-    background-color: #42ADF5;
+    background-color: #7BC4F8;
 }
 
 input[type="number"] {
