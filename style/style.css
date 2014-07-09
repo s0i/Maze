@@ -41,7 +41,7 @@ body, html {
 	display: block;
 	margin: 0 auto;
 	background-color: #FFFFFF;
-	position: absolute;
+	position: relative;
 	left: 0;
 	right: 0;
 	border-radius: 10px;
@@ -203,4 +203,8 @@ p {
 
 #export {
 	margin-bottom: 0;
+}
+
+#clear {
+	margin-top: 10px;
 }
