@@ -95,6 +95,10 @@ var Maze = {
 
         $('#console').click(function(event) {
             if (event.target === this) {
+                if ($(this).is(':animated')) {
+                    return;
+                }
+
                 $(this).stop(true, true).animate({
                     right: $(this).css('right') === "250px" ? 160 : 250
                 }, 500);
