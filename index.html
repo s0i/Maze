@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" type="text/css" href="style/style.css" />
 		<link rel="stylesheet" type="text/css" href="style/ui.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	</head>
 
 	<body>
@@ -16,9 +17,9 @@
 
 				<div id="nav">
 					<ul class="nav-list">
-						<li><img src="assets/Notepad32.png" /><a href="#maze">Home</a></li>
-						<li><img src="assets/Tool32.png" /><a href="#features">Features</a></li>
-						<li><img src="assets/Bookmark32.png" /><a href="#footer">Info</a></li>					
+						<li><img src="assets/icons/Notepad32.png" /><a href="#maze">Home</a></li>
+						<li><img src="assets/icons/Tool32.png" /><a href="#features">Features</a></li>
+						<li><img src="assets/icons/Bookmark32.png" /><a href="#footer">Info</a></li>					
 					</ul>
 				</div>
 			</div>
@@ -31,7 +32,7 @@
 			<div id="maze">
 				<div id="console">
 					<form id="palette">
-						<p id="tilesize">Tile size</p>
+						<p id="tilesize" title="Change the size of the tile. You will lose all currently placed titles.">Tile size</p>
 						<input type="radio" name="tilesize" id="eight" value="8">
 						<label for="eight">8 x 8</label>
 						<input type="radio" name="tilesize" id="sixteen" value="16">
@@ -39,15 +40,19 @@
 						<input type="radio" name="tilesize" id="thirtytwo" value="32" checked="checked">
 						<label for="thirtytwo"> 32 x 32</label>
 						<br><br>
-						<label for="height">Height</label><input type="text" id="height" value="1">
+						<label for="height" title="This is for development purposes outside of this app.">Height</label><input type="text" id="height" value="1">
 						<br><br>
-						<p id="tiletype">Tile type</p>
+						<p id="tiletype" title="Change the type of tile to be placed.">Tile type</p>
 						<input type="radio" name="type" id="floor" value="Floor" checked="checked">
 						<label for="floor">Floor</label>
 						<input type="radio" name="type"  id="wall" value="Wall">
 						<label for="wall">Wall</label><br>
 					</form>
 					<button id="clear">Clear</button>
+					<div id="instructions">
+						<p><img src="assets/icons/pencil.png"> Left-click places a tile.</p>
+						<p><img src="assets/icons/pencil.png"> Right-click deletes a tile.</p>
+					</div>
 				</div>
 
 				<canvas id="maze-container" height="704" width="704">
@@ -61,10 +66,10 @@
 
 			<div id="features">
 				<ul class="list">
-					<li><img src="assets/Star100.png" alt="bullet"><h3>Uses HTML5, CSS3 and JavaScript for improved compatibility and performance</h3></li>
-					<li><img src="assets/Star100.png" alt="bullet"><h3>Exportable into a number of languages</h3></li>
-					<li><img src="assets/Star100.png" alt="bullet"><h3>Highly customizable</h3></li>
-					<li><img src="assets/Star100.png" alt="bullet"><h3>Royalty-free</h3></li>
+					<li><img src="assets/icons/Star100.png" alt="bullet"><h3>Uses HTML5, CSS3 and JavaScript for improved compatibility and performance</h3></li>
+					<li><img src="assets/icons/Star100.png" alt="bullet"><h3>Exportable into a number of languages</h3></li>
+					<li><img src="assets/icons/Star100.png" alt="bullet"><h3>Highly customizable</h3></li>
+					<li><img src="assets/icons/Star100.png" alt="bullet"><h3>Royalty-free</h3></li>
 				</ul>
 			</div>
 		</div>
@@ -72,13 +77,14 @@
 		<div id="footer">
 
 			<ul class="footer-list">
-				<li><img src="assets/Chat.png" alt="bullet"/><h4><a href="#">Contact me</a></h4></li>
-				<li><img src="assets/Statistics.png" alt="bullet"/><h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPR4YYQDEDGAL" target="_blank">Donate</a></h4></li>	
+				<li><img src="assets/icons/Chat.png" alt="bullet"/><h4><a href="#">Contact me</a></h4></li>
+				<li><img src="assets/icons/Statistics.png" alt="bullet"/><h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPR4YYQDEDGAL" target="_blank">Donate</a></h4></li>	
 			</ul>
 		</div>
-		<script src="js/jquery-2.1.1.js"></script>
+		<script src="js/lib/jquery-2.1.1.min.js"></script>
 		<script src="js/maze.js"></script>
 		<script src="js/Drawer.js"></script>
+		<script src="js/lib/jquery-ui.min.js"></script>
 		<script>
 			Maze.Init();
 		</script>

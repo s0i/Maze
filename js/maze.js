@@ -13,8 +13,8 @@ var Maze = {
         },
 
         Sprite: {
-            Floor: './assets/floor.png',
-            Wall: './assets/wall.png'
+            Floor: './assets/tiles/floor.png',
+            Wall: './assets/tiles/wall.png'
         },
 
         Data: null
@@ -34,7 +34,6 @@ var Maze = {
     },
 
     Init: function() {
-        $('#features')
         Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
 
         $('#maze-container').mousedown(function(event) {
@@ -250,70 +249,55 @@ var Maze = {
         return array;
     },
 
-    GetNeighbor: function(cell) {
-        var x = cell.x;
-        var y = cell.y;
+    GetNeighborDirections: function(tile) {
+        var x = tile.x;
+        var y = tile.y;
+
+        var top, right, bottom, left;
+        var directions = [];
 
         try {
-            if (Maze.Tile.Data[x - 1][y].visited === true) {} else {
-                Maze.Tile.Data[x][y].type = Maze.Tile.Type.Floor;
-                Maze.Tile.Data[x - 1][y].type = Maze.Tile.Type.Floor;
-
-                return Maze.Tile.Data[x - 1][y];
+            if (Maze.Tile.Data[x - 1][y].type === Maze.Tile.Type.Empty) {
+                left = 0;
+            } else {
+                left = 1;
             }
-        } catch (e) {}
-
-        try {
-            if (Maze.Tile.Data[x + 1][y].visited === true) {} else {
-                Maze.Tile.Data[x][y].type = Maze.Tile.Type.Floor;
-                Maze.Tile.Data[x + 1][y].type = Maze.Tile.Type.Floor;
-
-                return Maze.Tile.Data[x + 1][y];
-            }
-        } catch (e) {}
-
-        try {
-            if (Maze.Tile.Data[x][y - 1].visited === true) {} else {
-                Maze.Tile.Data[x][y].type = Maze.Tile.Type.Floor;
-                Maze.Tile.Data[x][y - 1].type = Maze.Tile.Type.Floor;
-
-                return Maze.Tile.Data[x][y - 1];
-            }
-        } catch (e) {}
-
-        try {
-            if (Maze.Tile.Data[x][y + 1].visited === true) {} else {
-                Maze.Tile.Data[x][y].type = Maze.Tile.Type.Floor;
-                Maze.Tile.Data[x][y + 1].type = Maze.Tile.Type.Floor;
-
-                return Maze.Tile.Data[x][y + 1];
-            }
-        } catch (e) {}
-
-        return false;
-    },
-
-    GetRandomCell: function(data) {
-        var x = Math.floor(Math.random() * 21);
-        var y = Math.floor(Math.random() * 21);
-
-        if (data[x][y].visited === true) {
-            Maze.GetRandomCell(data);
-        } else {
-            data[x][y].visited = true;
-            return data[x][y];
+        } catch (e) {
+            left = 0;
         }
-    },
 
-    GenerateMaze: function(data) {
-        var cell = Maze.GetRandomCell(data);
-        var left = true;
-
-        while (left) {
-            cell = Maze.GetNeighbor(cell);
-            if (cell === false) {
-                left === cell;
+        try {
+            if (Maze.Tile.Data[x + 1][y].type === Maze.Tile.Type.Empty) {
+                right = 0;
+            } else {
+                right = 1;
             }
+        } catch (e) {
+            right = 0;
         }
+
+        try {
+            if (Maze.Tile.Data[x][y - 1].type === Maze.Tile.Type.Empty) {
+                top = 0;
+            } else {
+                top = 1;
+            }
+        } catch (e) {
+            top = 0;
+        }
+
+        try {
+            if (Maze.Tile.Data[x][y + 1].type === Maze.Tile.Type.Empty) {
+                bottom = 0;
+            } else {
+                bottom = 1;
+            }
+        } catch (e) {
+            bottom = 0;
+        }
+
+        directions.push(top, right, bottom, left);
+
+        return directions;
     }
 };

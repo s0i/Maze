@@ -208,3 +208,16 @@ p {
 #clear {
 	margin-top: 10px;
 }
+
+#instructions {
+	color: #FFFFFF;
+	text-align: left;
+	margin-top: 10px;
+	padding: 10px;
+	font-size: 0.8em;
+	margin-left: 10px;
+}
+
+.boop {
+	padding: 10px !important;
+}
