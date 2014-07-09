@@ -26,7 +26,7 @@ var Maze = {
         for (var x = 0; x < (width / Drawer.Size); x++) {
             array[x] = [];
             for (var y = 0; y < (height / Drawer.Size); y++) {
-                array[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Empty);
+                array[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Empty, false);
             }
         }
 
@@ -35,7 +35,7 @@ var Maze = {
 
     Init: function() {
         $('#features')
-        Maze.Tile.Data = Maze.CreateArray($('#maze-container').width(), $('#maze-container').height());
+        Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
 
         $('#maze-container').mousedown(function(event) {
             switch (event.which) {
@@ -94,18 +94,18 @@ var Maze = {
         });
 
         $('#console').click(function(event) {
-            if (event.target === this) {
-                if ($(this).is(':animated')) {
-                    return;
+            if ($(this).is(':animated')) {
+                return;
+            } else {
+                if (event.target === this) {
+                    $(this).stop(true, true).animate({
+                        right: $(this).css('right') === "250px" ? 160 : 250
+                    }, 500);
+
+                    $('#maze-container').animate({
+                        left: $('#maze-container').css('left') === "-175px" ? 0 : -175
+                    }, 500);
                 }
-
-                $(this).stop(true, true).animate({
-                    right: $(this).css('right') === "250px" ? 160 : 250
-                }, 500);
-
-                $('#maze-container').animate({
-                    left: $('#maze-container').css('left') === "-175px" ? 0 : -175
-                }, 500);
             }
         });
 
@@ -148,11 +148,12 @@ var Maze = {
     },
 
     Add: {
-        Tile: function(x, y, height, type) {
+        Tile: function(x, y, height, type, visited) {
             this.x = x;
             this.y = y;
             this.height = height;
             this.type = type;
+            this.visited = visited;
         },
 
         NPC: function(x, y, type) {
@@ -249,7 +250,70 @@ var Maze = {
         return array;
     },
 
-    GetTileSurroundings: function(data) {},
+    GetNeighbor: function(cell) {
+        var x = cell.x;
+        var y = cell.y;
 
-    GenerateMaze: function() {}
+        try {
+            if (Maze.Tile.Data[x - 1][y].visited === true) {} else {
+                Maze.Tile.Data[x][y].type = Maze.Tile.Type.Floor;
+                Maze.Tile.Data[x - 1][y].type = Maze.Tile.Type.Floor;
+
+                return Maze.Tile.Data[x - 1][y];
+            }
+        } catch (e) {}
+
+        try {
+            if (Maze.Tile.Data[x + 1][y].visited === true) {} else {
+                Maze.Tile.Data[x][y].type = Maze.Tile.Type.Floor;
+                Maze.Tile.Data[x + 1][y].type = Maze.Tile.Type.Floor;
+
+                return Maze.Tile.Data[x + 1][y];
+            }
+        } catch (e) {}
+
+        try {
+            if (Maze.Tile.Data[x][y - 1].visited === true) {} else {
+                Maze.Tile.Data[x][y].type = Maze.Tile.Type.Floor;
+                Maze.Tile.Data[x][y - 1].type = Maze.Tile.Type.Floor;
+
+                return Maze.Tile.Data[x][y - 1];
+            }
+        } catch (e) {}
+
+        try {
+            if (Maze.Tile.Data[x][y + 1].visited === true) {} else {
+                Maze.Tile.Data[x][y].type = Maze.Tile.Type.Floor;
+                Maze.Tile.Data[x][y + 1].type = Maze.Tile.Type.Floor;
+
+                return Maze.Tile.Data[x][y + 1];
+            }
+        } catch (e) {}
+
+        return false;
+    },
+
+    GetRandomCell: function(data) {
+        var x = Math.floor(Math.random() * 21);
+        var y = Math.floor(Math.random() * 21);
+
+        if (data[x][y].visited === true) {
+            Maze.GetRandomCell(data);
+        } else {
+            data[x][y].visited = true;
+            return data[x][y];
+        }
+    },
+
+    GenerateMaze: function(data) {
+        var cell = Maze.GetRandomCell(data);
+        var left = true;
+
+        while (left) {
+            cell = Maze.GetNeighbor(cell);
+            if (cell === false) {
+                left === cell;
+            }
+        }
+    }
 };
