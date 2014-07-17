@@ -36,60 +36,75 @@ var Maze = {
     Init: function() {
         Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
 
-        $('#maze-container').mousedown(function(event) {
-            switch (event.which) {
-                case 1:
-                    Drawer.isDrawing = true;
+        $('#maze-container').bind({
+            mousedown: function(event) {
+                switch (event.which) {
+                    case 1:
+                        Drawer.isDrawing = true;
+                        event.preventDefault();
+
+                        var coords = Maze.GetMousePosition(Drawer.Maze, {
+                            x: event.clientX,
+                            y: event.clientY
+                        });
+                        var tile = Maze.GetTileInfo(coords);
+                        Maze.PopulateTile(tile.coords.x, tile.coords.y, Drawer.Height, Drawer.Type);
+                        Maze.Render(Drawer.Maze);
+                        break;
+
+                    case 3:
+                        var coords = Maze.GetMousePosition(Drawer.Maze, {
+                            x: event.clientX,
+                            y: event.clientY
+                        });
+                        var tile = Maze.GetTileInfo(coords);
+                        Maze.RemoveTile(tile.coords.x, tile.coords.y, Maze.Tile.Data, Drawer.Maze);
+                        Maze.Render(Drawer.Maze);
+                        break;
+
+                    default:
+                        break;
+                }
+            },
+
+            mouseup: function() {
+                Drawer.isDrawing = false;
+            },
+
+            contextmenu: function() {
+                event.preventDefault();
+            },
+
+            mousemove: function() {
+                if (Drawer.isDrawing) {
                     event.preventDefault();
 
                     var coords = Maze.GetMousePosition(Drawer.Maze, {
                         x: event.clientX,
                         y: event.clientY
                     });
-                    var tile = Maze.GetTileInfo(Drawer.Maze, coords);
+                    var tile = Maze.GetTileInfo(coords);
                     Maze.PopulateTile(tile.coords.x, tile.coords.y, Drawer.Height, Drawer.Type);
                     Maze.Render(Drawer.Maze);
-                    break;
+                }
+            },
 
-                case 3:
-                    var coords = Maze.GetMousePosition(Drawer.Maze, {
-                        x: event.clientX,
-                        y: event.clientY
-                    });
-                    var tile = Maze.GetTileInfo(Drawer.Maze, coords);
-                    Maze.RemoveTile(tile.coords.x, tile.coords.y, Maze.Tile.Data, Drawer.Maze);
-                    Maze.Render(Drawer.Maze);
-                    break;
-
-                default:
-                    break;
-            }
-        });
-
-        $('#maze-container').mouseup(function() {
-            Drawer.isDrawing = false;
-        });
-
-        $(document).mouseup(function() {
-            Drawer.isDrawing = false;
-        });
-
-        $('#maze-container').bind("contextmenu", function(event) {
-            event.preventDefault();
-        });
-
-        $('#maze-container').mousemove(function() {
-            if (Drawer.isDrawing) {
+            dragstart: function() {
                 event.preventDefault();
+            },
 
+            mouseover: function() {
                 var coords = Maze.GetMousePosition(Drawer.Maze, {
                     x: event.clientX,
                     y: event.clientY
                 });
-                var tile = Maze.GetTileInfo(Drawer.Maze, coords);
-                Maze.PopulateTile(tile.coords.x, tile.coords.y, Drawer.Height, Drawer.Type);
-                Maze.Render(Drawer.Maze);
+
+                Maze.GetToolTip(coords);
             }
+        });
+
+        $(document).mouseup(function() {
+            Drawer.isDrawing = false;
         });
 
         $('#console').click(function(event) {
@@ -97,6 +112,12 @@ var Maze = {
                 return;
             } else {
                 if (event.target === this) {
+                    $('#console_label').animate({
+                        right: $('#console_label').css('right') === "235px" ? 145 : 235
+                    }, 500, function() {
+                        $(this).css('display') === "none" ? $(this).fadeIn() : $(this).fadeOut()
+                    });
+
                     $(this).stop(true, true).animate({
                         right: $(this).css('right') === "250px" ? 160 : 250
                     }, 500);
@@ -116,10 +137,6 @@ var Maze = {
 
         $('input[name="type"]').change(function(event) {
             $(this).attr('value') === 'Floor' ? Drawer.Type = Maze.Tile.Type.Floor : Drawer.Type = Maze.Tile.Type.Wall
-        });
-
-        $('#maze-container').bind('dragstart', function(event) {
-            event.preventDefault();
         });
 
         $('#clear').click(function() {
@@ -219,7 +236,12 @@ var Maze = {
         }
     },
 
-    GetTileInfo: function(canvas, coords) {
+    GetToolTip: function(coords) {
+        var tile = this.GetTileInfo(coords);
+
+    },
+
+    GetTileInfo: function(coords) {
         var tile = {
             coords: {
                 x: Maze.Tile.Data[coords.x][coords.y].x,
