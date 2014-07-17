@@ -47,14 +47,6 @@ body, html {
 	border-radius: 10px;
 }
 
-#console_label {
-	position: absolute;
-	right: 235px;
-	top: 210px;
-	transform: rotate(90deg);
-	color: #FFFFFF;	
-}
-
 #container {
 	width: 70%;
 	margin: 0 auto;

@@ -91,15 +91,6 @@ var Maze = {
 
             dragstart: function() {
                 event.preventDefault();
-            },
-
-            mouseover: function() {
-                var coords = Maze.GetMousePosition(Drawer.Maze, {
-                    x: event.clientX,
-                    y: event.clientY
-                });
-
-                Maze.GetToolTip(coords);
             }
         });
 
@@ -107,17 +98,11 @@ var Maze = {
             Drawer.isDrawing = false;
         });
 
-        $('#console').click(function(event) {
+        $('#console, #console_label').click(function(event) {
             if ($(this).is(':animated')) {
                 return;
             } else {
                 if (event.target === this) {
-                    $('#console_label').animate({
-                        right: $('#console_label').css('right') === "235px" ? 145 : 235
-                    }, 500, function() {
-                        $(this).css('display') === "none" ? $(this).fadeIn() : $(this).fadeOut()
-                    });
-
                     $(this).stop(true, true).animate({
                         right: $(this).css('right') === "250px" ? 160 : 250
                     }, 500);
@@ -160,7 +145,7 @@ var Maze = {
     },
 
     RemoveTile: function(x, y, array, canvas) {
-        Maze.Tile.Data[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Empty);
+        Maze.Tile.Data[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Wall);
     },
 
     Add: {
@@ -321,5 +306,72 @@ var Maze = {
         directions.push(top, right, bottom, left);
 
         return directions;
+    },
+
+    GetNeighbors: function(tile, data) {
+        var neighbors = [];
+
+        try {
+            var cell = data[tile.x + 1][tile.y];
+            neighbors.push(cell);
+        } catch (e) {}
+
+        try {
+            var cell = data[tile.x - 1][tile.y];
+            neighbors.push(cell);
+        } catch (e) {}
+
+        try {
+            var cell = data[tile.x][tile.y + 1];
+            neighbors.push(cell);
+        } catch (e) {}
+
+        try {
+            var cell = data[tile.x][tile.y - 1];
+            neighbors.push(cell);
+        } catch (e) {}
+
+        return neighbors;
+    },
+
+    GetRandomCell: function(data) {
+        var x = Math.floor(Math.random() * data.length);
+        var y = Math.floor(Math.random() * data.length);
+
+        return data[x][y];
+    },
+
+    GenerateMaze: function(data) {
+        var totalCells = Math.pow(data.length, 2);
+        var visited = 0;
+        var counter = 0;
+
+        var maze = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+
+        var current = Maze.GetRandomCell(data);
+        current.visited = true;
+
+        while (visited < totalCells) {
+            var neighbors = Maze.GetNeighbors(current, data);
+            var neighbor = neighbors[Math.floor(Math.random() * (neighbors.length + 1))];
+            if (typeof neighbor !== 'undefined') {
+                if (!neighbor.visited) {}
+                current.type = Maze.Tile.Type.Floor;
+                current = neighbor;
+
+                neighbor.type = Maze.Tile.Type.Floor;
+
+                data[neighbor.x][neighbor.y].visited = true;
+
+                visited++;
+
+                maze[current.x][current.y] = current;
+            }
+
+            counter++;
+            console.log(counter);
+        }
+
+        return maze;
     }
 };
