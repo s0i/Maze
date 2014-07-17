@@ -34,7 +34,7 @@ var Maze = {
     },
 
     Init: function() {
-        Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+        this.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
 
         $('#maze-container').bind({
             mousedown: function(event) {
@@ -58,7 +58,7 @@ var Maze = {
                             y: event.clientY
                         });
                         var tile = Maze.GetTileInfo(coords);
-                        Maze.RemoveTile(tile.coords.x, tile.coords.y, Maze.Tile.Data, Drawer.Maze);
+                        Maze.RemoveTile(tile.coords.x, tile.coords.y, Maze.Tile.Data);
                         Maze.Render(Drawer.Maze);
                         break;
 
@@ -116,8 +116,8 @@ var Maze = {
 
         $('input[name="tilesize"]').change(function(event) {
             Drawer.Size = Number($(this).attr('value'));
-            Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
-            Maze.Render(Drawer.Maze);
+            this.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+            this.Render(Drawer.Maze);
         });
 
         $('input[name="type"]').change(function(event) {
@@ -125,8 +125,8 @@ var Maze = {
         });
 
         $('#clear').click(function() {
-            Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
-            Maze.Render(Drawer.Maze);
+            this.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+            this.Render(Drawer.Maze);
         });
 
         $('#height').keypress(function(event) {
@@ -144,8 +144,8 @@ var Maze = {
         this.Render(Drawer.Maze);
     },
 
-    RemoveTile: function(x, y, array, canvas) {
-        Maze.Tile.Data[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Wall);
+    RemoveTile: function(x, y, data) {
+        data[x][y] = new this.Add.Tile(x, y, 0, Maze.Tile.Type.Empty, false);
     },
 
     Add: {
@@ -178,9 +178,9 @@ var Maze = {
     },
 
     PopulateTile: function(x, y, height, type) {
-        var tile = new this.Add.Tile(x, y, height, type);
+        var tile = new this.Add.Tile(x, y, height, type, false);
 
-        Maze.Tile.Data[x][y] = tile;
+        this.Tile.Data[x][y] = tile;
     },
 
     GetMousePosition: function(canvas, coords) {
@@ -264,7 +264,7 @@ var Maze = {
         var directions = [];
 
         try {
-            if (Maze.Tile.Data[x - 1][y].type === Maze.Tile.Type.Empty) {
+            if (this.Tile.Data[x - 1][y].type === this.Tile.Type.Empty) {
                 left = 0;
             } else {
                 left = 1;
@@ -274,7 +274,7 @@ var Maze = {
         }
 
         try {
-            if (Maze.Tile.Data[x + 1][y].type === Maze.Tile.Type.Empty) {
+            if (this.Tile.Data[x + 1][y].type === this.Tile.Type.Empty) {
                 right = 0;
             } else {
                 right = 1;
@@ -284,7 +284,7 @@ var Maze = {
         }
 
         try {
-            if (Maze.Tile.Data[x][y - 1].type === Maze.Tile.Type.Empty) {
+            if (this.Tile.Data[x][y - 1].type === this.Tile.Type.Empty) {
                 top = 0;
             } else {
                 top = 1;
@@ -294,7 +294,7 @@ var Maze = {
         }
 
         try {
-            if (Maze.Tile.Data[x][y + 1].type === Maze.Tile.Type.Empty) {
+            if (this.Tile.Data[x][y + 1].type === this.Tile.Type.Empty) {
                 bottom = 0;
             } else {
                 bottom = 1;
@@ -312,23 +312,23 @@ var Maze = {
         var neighbors = [];
 
         try {
-            var cell = data[tile.x + 1][tile.y];
-            neighbors.push(cell);
+            neighbors.push(data[tile.x - 1][tile.y]);
         } catch (e) {}
 
         try {
-            var cell = data[tile.x - 1][tile.y];
-            neighbors.push(cell);
+            neighbors.push(data[tile.x + 1][tile.y]);
         } catch (e) {}
 
         try {
-            var cell = data[tile.x][tile.y + 1];
-            neighbors.push(cell);
+            if (typeof data[tile.x][tile.y - 1] !== 'undefined') {
+                neighbors.push(data[tile.x][tile.y - 1]);
+            }
         } catch (e) {}
 
         try {
-            var cell = data[tile.x][tile.y - 1];
-            neighbors.push(cell);
+            if (typeof data[tile.x][tile.y + 1] !== 'undefined') {
+                neighbors.push(data[tile.x][tile.y + 1]);
+            }
         } catch (e) {}
 
         return neighbors;
@@ -346,7 +346,7 @@ var Maze = {
         var visited = 0;
         var counter = 0;
 
-        var maze = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+        var maze = this.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
 
         var current = Maze.GetRandomCell(data);
         current.visited = true;
@@ -354,20 +354,12 @@ var Maze = {
         while (visited < totalCells) {
             var neighbors = Maze.GetNeighbors(current, data);
             var neighbor = neighbors[Math.floor(Math.random() * (neighbors.length + 1))];
-            if (typeof neighbor !== 'undefined') {
-                if (!neighbor.visited) {}
-                current.type = Maze.Tile.Type.Floor;
+            if (neighbor.visited !== false) {
                 current = neighbor;
-
-                neighbor.type = Maze.Tile.Type.Floor;
-
                 data[neighbor.x][neighbor.y].visited = true;
-
                 visited++;
-
                 maze[current.x][current.y] = current;
             }
-
             counter++;
             console.log(counter);
         }
