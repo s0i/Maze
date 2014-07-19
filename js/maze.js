@@ -227,14 +227,16 @@ var Maze = {
     },
 
     GetTileInfo: function(coords) {
-        var tile = {
-            coords: {
-                x: Maze.Tile.Data[coords.x][coords.y].x,
-                y: Maze.Tile.Data[coords.x][coords.y].y
-            },
-            height: Maze.Tile.Data[coords.x][coords.y].height,
-            type: Maze.Tile.Data[coords.x][coords.y].type
-        };
+        try {
+            var tile = {
+                coords: {
+                    x: Maze.Tile.Data[coords.x][coords.y].x,
+                    y: Maze.Tile.Data[coords.x][coords.y].y
+                },
+                height: Maze.Tile.Data[coords.x][coords.y].height,
+                type: Maze.Tile.Data[coords.x][coords.y].type
+            };
+        } catch (e) {}
 
         return tile;
     },
@@ -256,51 +258,51 @@ var Maze = {
         return array;
     },
 
-    GetNeighborDirections: function(tile) {
+    GetNeighborDirections: function(tile, data) {
         var x = tile.x;
         var y = tile.y;
 
         var top, right, bottom, left;
         var directions = [];
 
-        try {
-            if (this.Tile.Data[x - 1][y].type === this.Tile.Type.Empty) {
-                left = 0;
-            } else {
+        if (x > 0) {
+            if (this.Tile.Data[x - 1][y].type !== this.Tile.Type.Empty) {
                 left = 1;
+            } else {
+                left = 0;
             }
-        } catch (e) {
+        } else {
             left = 0;
         }
 
-        try {
-            if (this.Tile.Data[x + 1][y].type === this.Tile.Type.Empty) {
-                right = 0;
-            } else {
+        if (x <= data.length) {
+            if (this.Tile.Data[x + 1][y].type !== this.Tile.Type.Empty) {
                 right = 1;
+            } else {
+                right = 0;
             }
-        } catch (e) {
+        } else {
             right = 0;
         }
 
-        try {
-            if (this.Tile.Data[x][y - 1].type === this.Tile.Type.Empty) {
-                top = 0;
+        if (y > 0) {
+            if (this.Tile.Data[x][y + 1].type !== this.Tile.Type.Empty) {
+                bottom = 1;
             } else {
-                top = 1;
+                bottom = 0;
             }
-        } catch (e) {
-            top = 0;
+        } else {
+            bottom = 0;
         }
 
-        try {
-            if (this.Tile.Data[x][y + 1].type === this.Tile.Type.Empty) {
-                bottom = 0;
+        if (y <= data.length) {
+            if (this.Tile.Data[x][y + 1].type !== this.Tile.Type.Empty) {
+                top = 1;
             } else {
-                bottom = 1;
+                top = 0;
             }
-        } catch (e) {
-            bottom = 0;
+        } else {
+            top = 0;
         }
 
         directions.push(top, right, bottom, left);
@@ -311,34 +313,16 @@ var Maze = {
     GetNeighbors: function(tile, data) {
         var neighbors = [];
 
-        try {
-            neighbors.push(data[tile.x - 1][tile.y]);
-        } catch (e) {}
-
-        try {
-            neighbors.push(data[tile.x + 1][tile.y]);
-        } catch (e) {}
-
-        try {
-            if (typeof data[tile.x][tile.y - 1] !== 'undefined') {
-                neighbors.push(data[tile.x][tile.y - 1]);
-            }
-        } catch (e) {}
-
-        try {
-            if (typeof data[tile.x][tile.y + 1] !== 'undefined') {
-                neighbors.push(data[tile.x][tile.y + 1]);
-            }
-        } catch (e) {}
+        tile.x > 0 ? neighbors.push(data[tile.x - 1][tile.y]) : 0
+        tile.x < data.length ? neighbors.push(data[tile.x + 1][tile.y]) : 0
+        tile.y > 0 ? neighbors.push(data[tile.x][tile.y - 1]) : 0
+        tile.y < data.length ? neighbors.push(data[tile.x][tile.y + 1]) : 0
 
         return neighbors;
     },
 
     GetRandomCell: function(data) {
-        var x = Math.floor(Math.random() * data.length);
-        var y = Math.floor(Math.random() * data.length);
-
-        return data[x][y];
+        return data[Math.floor(Math.random() * data.length)][Math.floor(Math.random() * data.length)];
     },
 
     GenerateMaze: function(data) {
