@@ -153,6 +153,10 @@ var Maze = {
             Drawer.Height = Number($(this).val());
         });
 
+        $('#darken').click(function() {
+
+        });
+
         this.Render(Drawer.Maze);
     },
 
