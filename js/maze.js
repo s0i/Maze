@@ -91,6 +91,17 @@ var Maze = {
 
             dragstart: function() {
                 event.preventDefault();
+            },
+
+            mousewheel: function(event) {
+                event.preventDefault();
+                // var wheel = event.originalEvent.wheelDelta / 120;
+                // var scale = Math.pow(1 + Math.abs(wheel) / 2, wheel > 0 ? 1 : -1);
+
+                // Drawer.Scale *= scale;
+
+                // Drawer.Maze.getContext('2d').scale(scale, scale);
+                // Maze.Render(Drawer.Maze);
             }
         });
 
@@ -116,6 +127,7 @@ var Maze = {
 
         $('input[name="tilesize"]').change(function(event) {
             Drawer.Size = Number($(this).attr('value'));
+
             Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
             Maze.Render(Drawer.Maze);
         });
