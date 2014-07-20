@@ -116,8 +116,8 @@ var Maze = {
 
         $('input[name="tilesize"]').change(function(event) {
             Drawer.Size = Number($(this).attr('value'));
-            this.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
-            this.Render(Drawer.Maze);
+            Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+            Maze.Render(Drawer.Maze);
         });
 
         $('input[name="type"]').change(function(event) {
@@ -125,8 +125,8 @@ var Maze = {
         });
 
         $('#clear').click(function() {
-            this.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
-            this.Render(Drawer.Maze);
+            Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+            Maze.Render(Drawer.Maze);
         });
 
         $('#height').keypress(function(event) {
@@ -186,8 +186,8 @@ var Maze = {
     GetMousePosition: function(canvas, coords) {
         var rect = canvas.getBoundingClientRect();
 
-        var x = Math.floor((coords.x - rect.left) / Drawer.Size);
-        var y = Math.floor((coords.y - rect.top) / Drawer.Size);
+        var x = Math.floor(((coords.x - rect.left) / Drawer.Scale) / Drawer.Size);
+        var y = Math.floor(((coords.y - rect.top) / Drawer.Scale) / Drawer.Size);
 
         return {
             x: x,
