@@ -147,9 +147,7 @@ var Maze = {
             Drawer.Height = Number($(this).val());
         });
 
-        $('#darken').click(function() {
-            $('*:not(#maze-container)').hide();
-        });
+        $('#darken').click(function() {});
 
         Maze.Render();
     },
