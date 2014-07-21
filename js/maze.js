@@ -49,7 +49,6 @@ var Maze = {
                         });
                         var tile = Maze.GetTileInfo(coords);
                         Maze.PopulateTile(tile.coords.x, tile.coords.y, Drawer.Height, Drawer.Type);
-                        Maze.Render(Drawer.Maze);
                         break;
 
                     case 3:
@@ -59,7 +58,6 @@ var Maze = {
                         });
                         var tile = Maze.GetTileInfo(coords);
                         Maze.RemoveTile(tile.coords.x, tile.coords.y, Maze.Tile.Data);
-                        Maze.Render(Drawer.Maze);
                         break;
 
                     default:
@@ -85,7 +83,6 @@ var Maze = {
                     });
                     var tile = Maze.GetTileInfo(coords);
                     Maze.PopulateTile(tile.coords.x, tile.coords.y, Drawer.Height, Drawer.Type);
-                    Maze.Render(Drawer.Maze);
                 }
             },
 
@@ -101,7 +98,6 @@ var Maze = {
                 // Drawer.Scale *= scale;
 
                 // Drawer.Maze.getContext('2d').scale(scale, scale);
-                // Maze.Render(Drawer.Maze);
             }
         });
 
@@ -129,7 +125,6 @@ var Maze = {
             Drawer.Size = Number($(this).attr('value'));
 
             Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
-            Maze.Render(Drawer.Maze);
         });
 
         $('input[name="type"]').change(function(event) {
@@ -138,7 +133,6 @@ var Maze = {
 
         $('#clear').click(function() {
             Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
-            Maze.Render(Drawer.Maze);
         });
 
         $('#height').keypress(function(event) {
@@ -154,10 +148,10 @@ var Maze = {
         });
 
         $('#darken').click(function() {
-
+            $('*:not(#maze-container)').hide();
         });
 
-        this.Render(Drawer.Maze);
+        Maze.Render();
     },
 
     RemoveTile: function(x, y, data) {
@@ -211,7 +205,12 @@ var Maze = {
         }
     },
 
-    Render: function(canvas) {
+    Render: function() {
+        requestAnimationFrame(Maze.Render);
+        Maze.Draw();
+    },
+
+    Draw: function(canvas) {
         var c = Drawer.Maze.getContext('2d');
 
         for (var x = 0; x < Maze.Tile.Data.length; x++) {
