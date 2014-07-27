@@ -35,6 +35,7 @@ var Maze = {
 
     Init: function() {
         this.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+        $('body').niceScroll().hide();
 
         $('#maze-container').bind({
             mousedown: function(event) {
@@ -105,7 +106,7 @@ var Maze = {
             Drawer.isDrawing = false;
         });
 
-        $('#console, #console_label').click(function(event) {
+        $('#console').click(function(event) {
             if ($(this).is(':animated')) {
                 return;
             } else {
@@ -133,6 +134,7 @@ var Maze = {
 
         $('#clear').click(function() {
             Maze.Tile.Data = Maze.CreateArray(Drawer.Maze.width, Drawer.Maze.height);
+            Exporter.clearScene();
         });
 
         $('#height').keypress(function(event) {
@@ -145,6 +147,17 @@ var Maze = {
 
         $('#height').keyup(function() {
             Drawer.Height = Number($(this).val());
+        });
+
+        $('#generate').click(function() {
+            Exporter.generate3DMaze(Maze.Tile.Data);
+            $('body').animate({
+                scrollTop: $('#3dContainer').offset().top
+            }, 2000);
+        });
+
+        $('#3dContainer').bind('mousewheel', function(event) {
+            event.preventDefault();
         });
 
         $('#darken').click(function() {});
@@ -288,7 +301,7 @@ var Maze = {
             left = 0;
         }
 
-        if (x <= data.length) {
+        if (x < data.length) {
             if (this.Tile.Data[x + 1][y].type !== this.Tile.Type.Empty) {
                 right = 1;
             } else {
@@ -298,7 +311,7 @@ var Maze = {
             right = 0;
         }
 
-        if (y > 0) {
+        if (y < data.length) {
             if (this.Tile.Data[x][y + 1].type !== this.Tile.Type.Empty) {
                 bottom = 1;
             } else {
@@ -308,8 +321,8 @@ var Maze = {
             bottom = 0;
         }
 
-        if (y <= data.length) {
-            if (this.Tile.Data[x][y + 1].type !== this.Tile.Type.Empty) {
+        if (y > 0) {
+            if (this.Tile.Data[x][y - 1].type !== this.Tile.Type.Empty) {
                 top = 1;
             } else {
                 top = 0;

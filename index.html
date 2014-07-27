@@ -50,7 +50,8 @@
 					</form>
 
 					<button id="clear">Clear</button>
-					<button id="darken">Lights Out</button>
+					<button id="darken">Lights Out</button><br>
+					<button id="generate">Generate 3D</button>
 
 					<div id="instructions">
 						<p><img src="assets/icons/pencil.png"> Left-click places a tile.</p>
@@ -84,12 +85,22 @@
 				<li><img src="assets/icons/Statistics.png" alt="bullet"/><h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZPR4YYQDEDGAL" target="_blank">Donate</a></h4></li>	
 			</ul>
 		</div>
+
+		<div id="3dContainer">
+			<canvas id="3dCanvas" height="100" width="100">
+			</canvas>
+		</div>
 		<script src="js/lib/jquery-2.1.1.min.js"></script>
+		<script src="js/lib/three.min.js"></script>
 		<script src="js/maze.js"></script>
 		<script src="js/Drawer.js"></script>
+		<script src="js/MazeToThree.js"></script>
 		<script src="js/lib/jquery-ui.min.js"></script>
+		<script src="js/lib/jquery.nicescroll.min.js"></script>
+		<script src="https://dl.dropboxusercontent.com/u/3587259/Code/Threejs/OrbitControls.js"></script>
 		<script>
 			Maze.Init();
+			Exporter.init();
 		</script>
 	</body>
 </html>

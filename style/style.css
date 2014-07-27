@@ -24,6 +24,10 @@ body, html {
 	margin-right: 10px;
 }
 
+#generate {
+	margin-top: 10px;
+}
+
 .form-control {
 	margin-top: 20px;
 }
@@ -35,6 +39,10 @@ body, html {
 	padding-top: 20px;
 	background-color: #3498db;
 	color: #FFFFFF;
+}
+
+#3dContainer {
+	width: 100%;
 }
 
 #maze-container {
