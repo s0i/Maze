@@ -44,7 +44,6 @@ var Maze = {
                 switch (event.which) {
                     case 1:
                         Drawer.isDrawing = true;
-                        event.preventDefault();
 
                         var coords = Maze.GetMousePosition(Drawer.Maze, {
                             x: event.clientX,
@@ -91,20 +90,6 @@ var Maze = {
 
             dragstart: function() {
                 event.preventDefault();
-            },
-
-            mousewheel: function(event) {
-                event.preventDefault();
-                // var wheel = event.originalEvent.wheelDelta / 120;
-                // var scale = Math.pow(1 + Math.abs(wheel) / 2, wheel > 0 ? 1 : -1);
-
-                // Drawer.Scale *= scale;
-
-                // Drawer.Maze.getContext('2d').scale(scale, scale);
-            },
-
-            mousewheel: function(event) {
-                Maze.ZoomHandler(event);
             }
         });
 
@@ -126,11 +111,6 @@ var Maze = {
                     }, 500);
                 }
             }
-        });
-
-        $(window).resize(function() {
-            $('#3dContainer').height($(window).height());
-            $('#3dContainer').width($(window).width());
         });
 
         $('input[name="tilesize"]').change(function(event) {
@@ -165,10 +145,6 @@ var Maze = {
             $('body').animate({
                 scrollTop: $('#3dContainer').offset().top
             }, 2000);
-        });
-
-        $('#3dContainer').bind('mousewheel', function(event) {
-            event.preventDefault();
         });
 
         $('#darken').click(function() {});

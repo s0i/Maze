@@ -19,7 +19,7 @@ var Exporter = (function(exporter) {
             canvas: $('#3dCanvas').get(0)
         });
 
-        renderer.setSize($(window).width(), $(window).height());
+        renderer.setSize($(window).width(), 400);
         renderer.setClearColor(Math.random() * 0xff0000, 0);
 
         camera = new THREE.PerspectiveCamera(45, 1, 1, 1500);
@@ -28,10 +28,11 @@ var Exporter = (function(exporter) {
         camera.position.z = -600;
 
         controls = new THREE.OrbitControls(camera);
-        controls.addEventListener('change', exporter.render);
-        controls.addEventListener('mousewheel', function(event) {
-            event.preventDefault();
+        
+        $('#3dContainer').change(function() {
+            exporert.renderer();
         });
+
         controls.minDistance = 900;
         controls.maxDistance = 800;
 
