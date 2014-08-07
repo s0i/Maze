@@ -99,6 +99,11 @@ var Maze = {
                 // Drawer.Scale *= scale;
 
                 // Drawer.Maze.getContext('2d').scale(scale, scale);
+            },
+
+            resize: function() {
+                $('#3dContainer').height($(window).height());
+                $('#3dContainer').width($(window).width());
             }
         });
 
@@ -112,11 +117,11 @@ var Maze = {
             } else {
                 if (event.target === this) {
                     $(this).stop(true, true).animate({
-                        right: $(this).css('right') === "250px" ? 160 : 250
+                        right: $(this).get(0).style.right === "13%" ? "20%" : "13%"
                     }, 500);
 
                     $('#maze-container').animate({
-                        left: $('#maze-container').css('left') === "-175px" ? 0 : -175
+                        left: $('#maze-container').css('left') === "0px" ? '-14%' : 0
                     }, 500);
                 }
             }
