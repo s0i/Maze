@@ -20,6 +20,8 @@ var Maze = {
         Data: null
     },
 
+    Scale: 1,
+
     CreateArray: function(width, height) {
         var array = [];
 
@@ -101,9 +103,8 @@ var Maze = {
                 // Drawer.Maze.getContext('2d').scale(scale, scale);
             },
 
-            resize: function() {
-                $('#3dContainer').height($(window).height());
-                $('#3dContainer').width($(window).width());
+            mousewheel: function(event) {
+                Maze.ZoomHandler(event);
             }
         });
 
@@ -125,6 +126,11 @@ var Maze = {
                     }, 500);
                 }
             }
+        });
+
+        $(window).resize(function() {
+            $('#3dContainer').height($(window).height());
+            $('#3dContainer').width($(window).width());
         });
 
         $('input[name="tilesize"]').change(function(event) {
@@ -228,7 +234,7 @@ var Maze = {
 
     Draw: function(canvas) {
         var c = Drawer.Maze.getContext('2d');
-
+        c.save();
         for (var x = 0; x < Maze.Tile.Data.length; x++) {
             for (var y = 0; y < Maze.Tile.Data[x].length; y++) {
                 if (Maze.Tile.Data[x][y].type === Maze.Tile.Type.Empty) {
@@ -250,6 +256,8 @@ var Maze = {
                 }
             }
         }
+
+        c.restore();
     },
 
     GetToolTip: function(coords) {
@@ -380,5 +388,12 @@ var Maze = {
         }
 
         return maze;
+    },
+
+    ZoomHandler: function(event) {
+        delta = event.wheelDelta / 120;
+        Maze.Scale += delta * 0.01;
+
+        if (Maze.Scale < 1) Maze.Scale = 1;
     }
 };
